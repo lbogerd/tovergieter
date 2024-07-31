@@ -1,6 +1,16 @@
+export const dynamic = "force-dynamic";
+
 import { NextRequest } from "next/server";
 import { z } from "zod";
-import { headerSchema } from "~/utils/schema";
+import {
+	headerSchema,
+	parseHeaders,
+	parseQuery,
+	querySchema,
+} from "~/utils/schema";
+// import { promises as fs } from "fs";
+import {promises as fs} from "fs";
+import { Readable } from "stream";
 
 const putHeaderSchema = z
 	.object({
@@ -10,9 +20,22 @@ const putHeaderSchema = z
 	})
 	.merge(headerSchema);
 
-export async function PUT(request: NextRequest) {
+export async function PUT(
+	request: NextRequest,
+	context: { params: { hash: string } },
+) {
 	try {
-		throw new Error("Not implemented");
+		const headers = parseHeaders(putHeaderSchema)(request.headers);
+
+		const hash = context.params.hash;
+		if (!hash) {
+			throw new Error("No hash provided");
+		}
+
+		const writeStream = fs.(`/tmp/${hash}.txt`, {
+			flags: "w",
+		});
+		const readStream = request.body!.pipeTo(writeStream);
 	} catch (error) {
 		return new Response((error as Object).toString(), { status: 400 });
 	}
