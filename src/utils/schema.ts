@@ -1,5 +1,10 @@
 import { z } from "zod";
 
+export const headerSchema = z.object({
+	"x-artifact-client-ci": z.string(),
+	"x-artifact-client-interactive": z.union([z.literal("0"), z.literal("1")]),
+});
+
 export const querySchema = z.object({
 	teamId: z.string(),
 	slug: z.string(),

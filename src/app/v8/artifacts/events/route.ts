@@ -2,12 +2,12 @@ export const dynamic = "force-dynamic";
 
 import { NextRequest } from "next/server";
 import z from "zod";
-import { parseHeaders, parseQuery, querySchema } from "~/utils/schema";
-
-const headerSchema = z.object({
-	"x-artifact-client-ci": z.string(),
-	"x-artifact-client-interactive": z.union([z.literal("0"), z.literal("1")]),
-});
+import {
+	headerSchema,
+	parseHeaders,
+	parseQuery,
+	querySchema,
+} from "~/utils/schema";
 
 const sourceSchema = z.enum(["LOCAL", "REMOTE"]);
 const hitLiteral = z.literal("HIT");
