@@ -1,0 +1,20 @@
+POST http://localhost:3000/v8/artifacts/events?teamId=asdf&slug=fdsa HTTP/1.1
+x-artifact-client-ci: asdf
+x-artifact-client-interactive: 0
+Content-Type: application/json
+
+[
+  {
+    "sessionId": "asdf",	
+    "source": "LOCAL",
+    "hash": "becee9a9-5cd3-473e-8108-9f327a3a337c",
+    "event": "MISS"
+  },
+  {
+    "sessionId": "asdf",
+    "source": "REMOTE",
+    "hash": "becee9a9-5cd3-473e-8108-9f327a3a337c",
+    "event": "HIT",
+    "duration": 712
+  }
+]
