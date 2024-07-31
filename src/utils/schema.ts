@@ -1,4 +1,9 @@
-import { z, ZodObject, ZodSchema } from "zod";
+import { z } from "zod";
+
+export const querySchema = z.object({
+	teamId: z.string(),
+	slug: z.string(),
+});
 
 export function parseHeaders<T extends z.ZodType<object>>(schema: T) {
 	return (headers: Headers): z.infer<T> => {
