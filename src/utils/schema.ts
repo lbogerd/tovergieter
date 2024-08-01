@@ -1,12 +1,14 @@
 import { z } from "zod";
 
 export const headerSchema = z.object({
-	"x-artifact-client-ci": z.string(),
-	"x-artifact-client-interactive": z.union([z.literal("0"), z.literal("1")]),
+	"x-artifact-client-ci": z.string().optional(),
+	"x-artifact-client-interactive": z
+		.union([z.literal("0"), z.literal("1")])
+		.optional(),
 });
 
 export const querySchema = z.object({
-	teamId: z.string(),
+	teamId: z.string().optional(),
 	slug: z.string(),
 });
 

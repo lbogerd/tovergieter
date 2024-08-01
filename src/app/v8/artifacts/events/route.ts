@@ -10,33 +10,16 @@ import {
 } from "~/utils/schema";
 
 const sourceSchema = z.enum(["LOCAL", "REMOTE"]);
-const hitLiteral = z.literal("HIT");
-const missLiteral = z.literal("MISS");
-
-const baseBodySchema = z.object({
-	sessionId: z.string(),
-	source: sourceSchema,
-	hash: z.string().uuid(),
-});
+const eventSchema = z.enum(["HIT", "MISS"]);
 
 const bodySchema = z.array(
-	z.union([
-		baseBodySchema
-			.merge(
-				z.object({
-					event: missLiteral,
-				}),
-			)
-			.strict(),
-		baseBodySchema
-			.merge(
-				z.object({
-					event: hitLiteral,
-					duration: z.number().positive(),
-				}),
-			)
-			.strict(),
-	]),
+	z.object({
+		sessionId: z.string().uuid(),
+		source: sourceSchema,
+		hash: z.string(),
+		event: eventSchema,
+		duration: z.number().optional(),
+	}),
 );
 
 export async function POST(request: NextRequest) {
@@ -48,8 +31,6 @@ export async function POST(request: NextRequest) {
 		const query = parseQuery(querySchema)(searchParams);
 
 		const body = bodySchema.parse(await request.json());
-
-		console.log({ headers, query, body });
 
 		return new Response("OK", { status: 200 });
 	} catch (error) {
