@@ -7,7 +7,7 @@ import {
 	parseHeaders,
 	parseQuery,
 	querySchema,
-} from "~/utils/schema";
+} from "~/utils/zod-schemas";
 
 const sourceSchema = z.enum(["LOCAL", "REMOTE"]);
 const eventSchema = z.enum(["HIT", "MISS"]);
