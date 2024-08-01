@@ -33,7 +33,7 @@ export async function PUT(
 }
 
 export async function GET(
-	request: NextRequest,
+	_request: NextRequest,
 	context: { params: { hash: string } },
 ) {
 	try {
@@ -51,9 +51,24 @@ export async function GET(
 	}
 }
 
-export async function HEAD(request: NextRequest) {
+export async function HEAD(
+	_request: NextRequest,
+	context: { params: { hash: string } },
+) {
 	try {
-		throw new Error("Not implemented");
+		const hash = context.params.hash;
+
+		if (!hash) {
+			throw new Error("No hash provided");
+		}
+
+		try {
+			await fs.access(`./uploads/${hash}`);
+		} catch (error) {
+			return new Response(null, { status: 404 });
+		}
+
+		return new Response(null, { status: 200 });
 	} catch (error) {
 		return new Response((error as Object).toString(), { status: 400 });
 	}
