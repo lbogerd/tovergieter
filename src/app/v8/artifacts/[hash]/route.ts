@@ -1,49 +1,51 @@
 export const dynamic = "force-dynamic";
 
 import { NextRequest } from "next/server";
-import { z } from "zod";
-import {
-	headerSchema,
-	parseHeaders,
-	parseQuery,
-	querySchema,
-} from "~/utils/schema";
-// import { promises as fs } from "fs";
-import {promises as fs} from "fs";
-import { Readable } from "stream";
-
-const putHeaderSchema = z
-	.object({
-		"Content-Length": z.coerce.number(),
-		"x-artifact-duration": z.coerce.number(),
-		"x-artifact-tag": z.string(),
-	})
-	.merge(headerSchema);
+import { promises as fs } from "fs";
 
 export async function PUT(
 	request: NextRequest,
 	context: { params: { hash: string } },
 ) {
 	try {
-		const headers = parseHeaders(putHeaderSchema)(request.headers);
-
 		const hash = context.params.hash;
 		if (!hash) {
 			throw new Error("No hash provided");
 		}
 
-		const writeStream = fs.(`/tmp/${hash}.txt`, {
-			flags: "w",
-		});
-		const readStream = request.body!.pipeTo(writeStream);
+		// check if directory exists, if not create it
+		try {
+			await fs.access("./uploads");
+		} catch (error) {
+			await fs.mkdir("./uploads");
+		}
+
+		// get the file from the request and save it to the file system
+		const file = await request.blob();
+		const arrayBuffer = await file.arrayBuffer();
+
+		await fs.writeFile(`./uploads/${hash}`, Buffer.from(arrayBuffer));
+
+		return new Response(null, { status: 202 });
 	} catch (error) {
 		return new Response((error as Object).toString(), { status: 400 });
 	}
 }
 
-export async function GET(request: NextRequest) {
+export async function GET(
+	request: NextRequest,
+	context: { params: { hash: string } },
+) {
 	try {
-		throw new Error("Not implemented");
+		const hash = context.params.hash;
+
+		if (!hash) {
+			throw new Error("No hash provided");
+		}
+
+		const file = await fs.readFile(`./uploads/${hash}`);
+
+		return new Response(file, { status: 200 });
 	} catch (error) {
 		return new Response((error as Object).toString(), { status: 400 });
 	}
