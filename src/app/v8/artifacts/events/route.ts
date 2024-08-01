@@ -8,6 +8,8 @@ import {
 	parseQuery,
 	querySchema,
 } from "~/utils/zod-schemas";
+import { db } from "~/utils/db/db";
+import { tempLog } from "~/utils/db/schema";
 
 const sourceSchema = z.enum(["LOCAL", "REMOTE"]);
 const eventSchema = z.enum(["HIT", "MISS"]);
@@ -32,8 +34,18 @@ export async function POST(request: NextRequest) {
 
 		const body = bodySchema.parse(await request.json());
 
+		await db.insert(tempLog).values({
+			log: JSON.stringify({
+				headers,
+				query,
+				body,
+			}),
+		});
+
 		return new Response("OK", { status: 200 });
 	} catch (error) {
+		console.error(error);
+
 		return new Response((error as Object).toString(), { status: 400 });
 	}
 }
