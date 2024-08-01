@@ -7,6 +7,8 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
+		"db": "pnpm drizzle-kit studio",
+		"db:push": "pnpm drizzle-kit push",
 		"db:mig:gen": "pnpm drizzle-kit generate",
 		"db:mig:run": "pnpm dlx tsx src/utils/db/migrate.ts"
 	},
