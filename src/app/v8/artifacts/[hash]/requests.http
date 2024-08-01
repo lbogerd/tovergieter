@@ -1,11 +1,11 @@
-PUT http://localhost:3000/v8/artifacts/its-a-hash HTTP/1.1
+PUT http://localhost:8080/v8/artifacts/its-a-hash HTTP/1.1
 
 < ./src/app/v8/artifacts/[hash]/test-file.txt
 
 ###
 
-GET http://localhost:3000/v8/artifacts/its-a-hash HTTP/1.1
+GET http://localhost:8080/v8/artifacts/its-a-hash HTTP/1.1
 
 ###
 
-HEAD http://localhost:3000/v8/artifacts/its-a-hash HTTP/1.1
+HEAD http://localhost:8080/v8/artifacts/its-a-hash HTTP/1.1

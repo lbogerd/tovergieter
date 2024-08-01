@@ -1,1 +1,1 @@
-GET http://localhost:3000/v8/artifacts/status?teamId=asdf&slug=fdsa HTTP/1.1
+GET http://localhost:8080/v8/artifacts/status?teamId=asdf&slug=fdsa HTTP/1.1

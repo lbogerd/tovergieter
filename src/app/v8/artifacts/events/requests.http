@@ -1,4 +1,4 @@
-POST http://localhost:3000/v8/artifacts/events?teamId=asdf&slug=fdsa HTTP/1.1
+POST http://localhost:8080/v8/artifacts/events?teamId=asdf&slug=fdsa HTTP/1.1
 x-artifact-client-ci: asdf
 x-artifact-client-interactive: 0
 Content-Type: application/json
