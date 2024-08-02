@@ -15,7 +15,7 @@ export const Button = ({
 
 	return (
 		<button
-			className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 duration-75 ease-in-out"
+			className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-75"
 			onClick={() => deleteFile(fileName).then(() => router.refresh())}
 		>
 			{children}
