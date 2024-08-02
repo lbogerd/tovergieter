@@ -7,7 +7,7 @@ import {
 	parseHeaders,
 	parseQuery,
 	querySchema,
-} from "~/utils/zod-schemas";
+} from "~/utils/zod-schema";
 import { db } from "~/utils/db/db";
 import { tempLog } from "~/utils/db/schema";
 

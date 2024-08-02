@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 
 import { NextRequest } from "next/server";
 import { z } from "zod";
-import { parseQuery, querySchema } from "~/utils/zod-schemas";
+import { parseQuery, querySchema } from "~/utils/zod-schema";
 
 const responseSchema = z.object({
 	status: z.union([
