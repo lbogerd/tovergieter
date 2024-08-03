@@ -1,8 +1,14 @@
 import { round } from "mathjs";
+import { redirect } from "next/navigation";
 import { Button } from "~/components/Button";
+import { validateRequest } from "~/utils/auth";
 import { getFormattedFilesStats } from "~/utils/files";
 
 export default async function Home() {
+	const { user } = await validateRequest();
+
+	if (!user) redirect("/login");
+
 	const files = await getFormattedFilesStats();
 
 	return (
