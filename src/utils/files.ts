@@ -3,6 +3,13 @@ import { unit } from "mathjs";
 import { env } from "~/utils/env.mjs";
 
 export const getCurrentFiles = async () => {
+	// check if the upload path exists
+	try {
+		await fs.access(env.UPLOAD_PATH);
+	} catch (err) {
+		return [];
+	}
+
 	return await fs.readdir(env.UPLOAD_PATH);
 };
 
