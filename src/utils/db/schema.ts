@@ -1,6 +1,4 @@
-import { pgTableCreator, serial, text, timestamp } from "drizzle-orm/pg-core";
-
-const pgTable = pgTableCreator((name) => `tovergieter_${name}`);
+import { pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
 
 export const tempLog = pgTable("temp_log", {
 	id: serial("id").primaryKey(),
