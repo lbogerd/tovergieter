@@ -1,5 +1,6 @@
 {
 	"compilerOptions": {
+		"target": "ESNext",
 		"lib": ["dom", "dom.iterable", "esnext"],
 		"allowJs": true,
 		"skipLibCheck": true,
@@ -21,6 +22,13 @@
 			"~/*": ["./src/*"]
 		}
 	},
-	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/utils/env.mjs", "src/utils/db/migrate.js"],
+	"include": [
+		"next-env.d.ts",
+		"**/*.ts",
+		"**/*.tsx",
+		".next/types/**/*.ts",
+		"src/utils/env.mjs",
+		"src/utils/db/migrate.js"
+	],
 	"exclude": ["node_modules"]
 }
