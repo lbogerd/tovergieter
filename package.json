@@ -7,16 +7,15 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
-		"db": "pnpm drizzle-kit studio",
-		"db:push": "pnpm drizzle-kit push",
-		"db:mig:gen": "pnpm drizzle-kit generate",
-		"db:mig:run": "pnpm drizzle-kit migrate"
+		"db": "pnpm dlx prisma studio",
+		"db:push": "pnpm dlx prisma db push",
+		"db:pull": "pnpm dlx prisma db pull",
+		"db:mig": "pnpm dlx prisma migrate dev"
 	},
 	"dependencies": {
-		"@neondatabase/serverless": "0.10.1",
+		"@prisma/client": "5.20.0",
 		"@t3-oss/env-nextjs": "0.11.1",
 		"clsx": "2.1.1",
-		"drizzle-orm": "0.34.1",
 		"lucide-react": "0.451.0",
 		"mathjs": "13.2.0",
 		"next": "14.2.15",
@@ -31,11 +30,11 @@
 		"@types/react": "^18",
 		"@types/react-dom": "^18",
 		"dotenv": "16.4.5",
-		"drizzle-kit": "0.25.0",
 		"eslint": "^8",
 		"eslint-config-next": "14.2.5",
 		"postcss": "^8",
 		"prettier": "^3",
+		"prisma": "5.20.0",
 		"tailwindcss": "3.4.13",
 		"typescript": "^5"
 	}
