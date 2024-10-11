@@ -4,11 +4,27 @@ import { NextRequest } from "next/server";
 import { promises as fs } from "fs";
 import { env } from "~/utils/env.mjs";
 
+const checkAuth = async (request: NextRequest) => {
+	const authHeader = request.headers.get("Authorization");
+
+	if (!authHeader) {
+		throw new Error("No Authorization header provided");
+	}
+
+	const token = authHeader.split(" ")[1];
+
+	if (token !== env.API_TOKEN) {
+		throw new Error("Invalid token");
+	}
+};
+
 export async function PUT(
 	request: NextRequest,
 	context: { params: { hash: string } },
 ) {
 	try {
+		await checkAuth(request);
+
 		const hash = context.params.hash;
 		if (!hash) {
 			throw new Error("No hash provided");
@@ -34,12 +50,13 @@ export async function PUT(
 }
 
 export async function GET(
-	_request: NextRequest,
+	request: NextRequest,
 	context: { params: { hash: string } },
 ) {
 	try {
-		const hash = context.params.hash;
+		await checkAuth(request);
 
+		const hash = context.params.hash;
 		if (!hash) {
 			throw new Error("No hash provided");
 		}
@@ -53,12 +70,13 @@ export async function GET(
 }
 
 export async function HEAD(
-	_request: NextRequest,
+	request: NextRequest,
 	context: { params: { hash: string } },
 ) {
 	try {
-		const hash = context.params.hash;
+		await checkAuth(request);
 
+		const hash = context.params.hash;
 		if (!hash) {
 			throw new Error("No hash provided");
 		}

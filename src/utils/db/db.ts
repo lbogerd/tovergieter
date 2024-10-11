@@ -1,8 +1,5 @@
-import { neon } from "@neondatabase/serverless";
-import { drizzle } from "drizzle-orm/neon-http";
+import { drizzle } from "drizzle-orm/connect";
 import { env } from "../env.mjs";
-import * as schema from "./schema";
 
-export const dbConnection = neon(env.DB_URL);
-
-export const db = drizzle(dbConnection, { schema });
+const dbClient = env.NODE_ENV === "production" ? "neon-http" : "postgres-js";
+export const db = drizzle(dbClient, env.DB_URL);
