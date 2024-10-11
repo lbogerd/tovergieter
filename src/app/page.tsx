@@ -28,7 +28,7 @@ export default async function Home() {
 				{orderedFiles.map((file) => (
 					<li
 						key={file.name}
-						className="grid grid-cols-5 w-full p-1 bg-gray-100 rounded-md [&>span]:m-auto"
+						className="grid grid-cols-5 w-full gap-4 p-1 bg-gray-100 rounded-md [&>span]:m-auto"
 					>
 						<span className="truncate">{file.name}</span>
 
