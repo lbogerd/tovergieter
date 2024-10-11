@@ -4,7 +4,12 @@ import { NextRequest } from "next/server";
 import { promises as fs } from "fs";
 import { env } from "~/utils/env.mjs";
 
-const checkAuth = async (request: NextRequest) => {
+const checkAuth = async (
+	request: NextRequest,
+	params: {
+		hash: string;
+	},
+) => {
 	const authHeader = request.headers.get("Authorization");
 
 	if (!authHeader) {
@@ -16,6 +21,12 @@ const checkAuth = async (request: NextRequest) => {
 	if (token !== env.API_TOKEN) {
 		throw new Error("Invalid token");
 	}
+
+	if (!params.hash) {
+		throw new Error("No hash provided");
+	}
+
+	return;
 };
 
 export async function PUT(
@@ -23,12 +34,7 @@ export async function PUT(
 	context: { params: { hash: string } },
 ) {
 	try {
-		await checkAuth(request);
-
-		const hash = context.params.hash;
-		if (!hash) {
-			throw new Error("No hash provided");
-		}
+		await checkAuth(request, context.params);
 
 		// check if directory exists, if not create it
 		try {
@@ -41,7 +47,10 @@ export async function PUT(
 		const file = await request.blob();
 		const arrayBuffer = await file.arrayBuffer();
 
-		await fs.writeFile(`${env.UPLOAD_PATH}/${hash}`, Buffer.from(arrayBuffer));
+		await fs.writeFile(
+			`${env.UPLOAD_PATH}/${context.params.hash}`,
+			Buffer.from(arrayBuffer),
+		);
 
 		return new Response(null, { status: 202 });
 	} catch (error) {
@@ -54,14 +63,9 @@ export async function GET(
 	context: { params: { hash: string } },
 ) {
 	try {
-		await checkAuth(request);
+		await checkAuth(request, context.params);
 
-		const hash = context.params.hash;
-		if (!hash) {
-			throw new Error("No hash provided");
-		}
-
-		const file = await fs.readFile(`${env.UPLOAD_PATH}/${hash}`);
+		const file = await fs.readFile(`${env.UPLOAD_PATH}/${context.params.hash}`);
 
 		return new Response(file, { status: 200 });
 	} catch (error) {
@@ -74,15 +78,10 @@ export async function HEAD(
 	context: { params: { hash: string } },
 ) {
 	try {
-		await checkAuth(request);
-
-		const hash = context.params.hash;
-		if (!hash) {
-			throw new Error("No hash provided");
-		}
+		await checkAuth(request, context.params);
 
 		try {
-			await fs.access(`${env.UPLOAD_PATH}/${hash}`);
+			await fs.access(`${env.UPLOAD_PATH}/${context.params.hash}`);
 		} catch (error) {
 			return new Response(null, { status: 404 });
 		}
