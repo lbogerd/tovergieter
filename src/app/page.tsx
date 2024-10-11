@@ -18,8 +18,7 @@ export default async function Home() {
 	});
 
 	return (
-		<main className="flex min-h-dvh flex-col items-center py-3">
-			<h1 className="text-2xl font-bold text-center">Tovergieter</h1>
+		<>
 			<p>
 				Disk space used: {round(files.totalSize.value, 2)}{" "}
 				{files.totalSize.unit}
@@ -51,6 +50,6 @@ export default async function Home() {
 					</li>
 				))}
 			</ol>
-		</main>
+		</>
 	);
 }
