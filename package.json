@@ -8,7 +8,6 @@
 		"start": "next start",
 		"lint": "next lint",
 		"db": "pnpm drizzle-kit studio",
-		"db:studio": "pnpm drizzle-kit studio",
 		"db:push": "pnpm drizzle-kit push",
 		"db:mig:gen": "pnpm drizzle-kit generate",
 		"db:mig:run": "pnpm drizzle-kit migrate"
