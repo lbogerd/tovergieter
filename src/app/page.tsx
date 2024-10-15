@@ -10,22 +10,34 @@ export default async function Home() {
 	if (!user) redirect("/login");
 
 	const files = await getFormattedFilesStats();
+	// sort files by last used, most recent first
+	const orderedFiles = files.files.sort((a, b) => {
+		if (a.lastUsed > b.lastUsed) {
+			return -1;
+		}
+
+		if (a.lastUsed < b.lastUsed) {
+			return 1;
+		}
+
+		return 0;
+	});
 
 	return (
-		<main className="flex min-h-dvh flex-col items-center py-3">
-			<h1 className="text-2xl font-bold text-center">Tovergieter</h1>
+		<>
 			<p>
 				Disk space used: {round(files.totalSize.value, 2)}{" "}
 				{files.totalSize.unit}
 			</p>
 
-			<ol className="w-full p-2">
-				{files.files.map((file) => (
+			<ol className="w-full p-2 space-y-2">
+				{orderedFiles.map((file) => (
 					<li
 						key={file.name}
-						className="flex items-center justify-between w-full p-2 my-2 bg-gray-100 rounded-md"
+						className="grid grid-cols-5 w-full gap-4 p-1 bg-gray-100 rounded-md [&>span]:m-auto"
 					>
 						<span className="truncate">{file.name}</span>
+
 						<span className="text-sm">
 							{round(file.size.value, 2)} {file.size.unit}
 						</span>
@@ -44,6 +56,6 @@ export default async function Home() {
 					</li>
 				))}
 			</ol>
-		</main>
+		</>
 	);
 }

@@ -3,7 +3,8 @@ import { z } from "zod";
 
 export const env = createEnv({
 	server: {
-		DB_URL: z.string().url(),
+		API_TOKEN: z.string(),
+		NODE_ENV: z.union([z.literal("development"), z.literal("production")]),
 		UPLOAD_PATH: z.string(),
 
 		// these are always available in the server environment
@@ -12,8 +13,5 @@ export const env = createEnv({
 		// would not be needed if we used typescript but that
 		// would require running tsc before running the app
 		NODE_ENV: z.string().optional(),
-	},
-	experimental__runtimeEnv: {
-		NEXT_PUBLIC_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_PUBLISHABLE_KEY,
 	},
 });

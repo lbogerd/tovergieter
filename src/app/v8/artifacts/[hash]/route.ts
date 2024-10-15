@@ -4,20 +4,47 @@ import { NextRequest } from "next/server";
 import { promises as fs } from "fs";
 import { env } from "~/utils/env.mjs";
 
+const filePath = (hash: string) => `${env.UPLOAD_PATH}/${hash}`;
+
+const checkAuth = async (
+	request: NextRequest,
+	params: {
+		hash: string;
+	},
+) => {
+	const authHeader = request.headers.get("Authorization");
+
+	if (!authHeader) {
+		throw new Error("No Authorization header provided");
+	}
+
+	const token = authHeader.split(" ")[1];
+
+	if (token !== env.API_TOKEN) {
+		throw new Error("Invalid token");
+	}
+
+	if (!params.hash) {
+		throw new Error("No hash provided");
+	}
+
+	return;
+};
+
+/**
+ * Upload a file to the server.
+ */
 export async function PUT(
 	request: NextRequest,
 	context: { params: { hash: string } },
 ) {
 	try {
-		const hash = context.params.hash;
-		if (!hash) {
-			throw new Error("No hash provided");
-		}
+		await checkAuth(request, context.params);
 
 		// check if directory exists, if not create it
 		try {
 			await fs.access(env.UPLOAD_PATH);
-		} catch (error) {
+		} catch (_error) {
 			await fs.mkdir(env.UPLOAD_PATH);
 		}
 
@@ -25,7 +52,7 @@ export async function PUT(
 		const file = await request.blob();
 		const arrayBuffer = await file.arrayBuffer();
 
-		await fs.writeFile(`${env.UPLOAD_PATH}/${hash}`, Buffer.from(arrayBuffer));
+		await fs.writeFile(filePath(context.params.hash), Buffer.from(arrayBuffer));
 
 		return new Response(null, { status: 202 });
 	} catch (error) {
@@ -33,18 +60,17 @@ export async function PUT(
 	}
 }
 
+/**
+ * Get a file from the server.
+ */
 export async function GET(
-	_request: NextRequest,
+	request: NextRequest,
 	context: { params: { hash: string } },
 ) {
 	try {
-		const hash = context.params.hash;
+		await checkAuth(request, context.params);
 
-		if (!hash) {
-			throw new Error("No hash provided");
-		}
-
-		const file = await fs.readFile(`${env.UPLOAD_PATH}/${hash}`);
+		const file = await fs.readFile(filePath(context.params.hash));
 
 		return new Response(file, { status: 200 });
 	} catch (error) {
@@ -52,22 +78,17 @@ export async function GET(
 	}
 }
 
+/**
+ * Check if a file exists on the server.
+ */
 export async function HEAD(
-	_request: NextRequest,
+	request: NextRequest,
 	context: { params: { hash: string } },
 ) {
 	try {
-		const hash = context.params.hash;
+		await checkAuth(request, context.params);
 
-		if (!hash) {
-			throw new Error("No hash provided");
-		}
-
-		try {
-			await fs.access(`${env.UPLOAD_PATH}/${hash}`);
-		} catch (error) {
-			return new Response(null, { status: 404 });
-		}
+		await fs.access(filePath(context.params.hash));
 
 		return new Response(null, { status: 200 });
 	} catch (error) {
