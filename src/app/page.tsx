@@ -1,14 +1,9 @@
 import { round } from "mathjs";
 import { redirect } from "next/navigation";
 import { Button } from "~/components/Button";
-import { validateRequest } from "~/utils/auth";
 import { getFormattedFilesStats } from "~/utils/files";
 
 export default async function Home() {
-	const { user } = await validateRequest();
-
-	if (!user) redirect("/login");
-
 	const files = await getFormattedFilesStats();
 	// sort files by last used, most recent first
 	const orderedFiles = files.files.sort((a, b) => {
