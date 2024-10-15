@@ -18,7 +18,6 @@
 		"lucide-react": "0.451.0",
 		"mathjs": "13.2.0",
 		"next": "14.2.15",
-		"postgres": "3.4.4",
 		"react": "^18",
 		"react-dom": "^18",
 		"tailwind-merge": "2.5.3",
