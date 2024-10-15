@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
 		console.log({ query });
 
 		const response: z.infer<typeof responseSchema> = {
-			status: "disabled",
+			status: "enabled",
 		};
 
 		return new Response(JSON.stringify(response), { status: 200 });
