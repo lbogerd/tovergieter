@@ -9,7 +9,8 @@ API_TOKEN=<example value>
 UPLOAD_PATH=uploads
 ```
 
-> [!WARNING] DO NOT CHANGE THE UPLOAD_PATH VALUE
+> [!WARNING]
+> DO NOT CHANGE THE UPLOAD_PATH VALUE
 > This is currently hardcoded to /uploads in the Dockerfile. I'll fix this later but for now just don't change it.
 
 ## Using the Remote Cache
@@ -24,7 +25,7 @@ Using the cache in builds is a bit of manual work. I intend to write a script to
 ```
 
 > [!IMPORTANT]
-> Notice the lack of a trialing slash in the URL. This is important. Another thing I'll remedy in the future. 3.
+> Notice the lack of a trialing slash in the URL. This is important. Another thing I'll remedy in the future.
 
 3. Add the following flags to your `turbo build` command in `package.json`:
 
