@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { round } from "mathjs";
 import { redirect } from "next/navigation";
 import { Button } from "~/components/Button";
