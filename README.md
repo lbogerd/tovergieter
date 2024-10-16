@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is a simple [Next.js](https://nextjs.org/) project that implements the TurboRepo remote caching API and provides a minimal management page for the saved cache.
 
-## Getting Started
+## Server Setup
 
-First, run the development server:
+Use the Docker image. Make sure to set the following env vars:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+API_TOKEN=<example value>
+UPLOAD_PATH=uploads
 ```
 
-Open [http://localhost:8080](http://localhost:8080) with your browser to see the result.
+> [!WARNING] DO NOT CHANGE THE UPLOAD_PATH VALUE
+> This is currently hardcoded to /uploads in the Dockerfile. I'll fix this later but for now just don't change it.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Using the Remote Cache
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Using the cache in builds is a bit of manual work. I intend to write a script to automate this later.
 
-## Learn More
+1. Add `config.json` to your root-level `.turbo` folder (if needed)
+2. Add the following line to the JSON object:
 
-To learn more about Next.js, take a look at the following resources:
+```
+"apiurl": "https://example.com"
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+> [!IMPORTANT]
+> Notice the lack of a trialing slash in the URL. This is important. Another thing I'll remedy in the future. 3.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+3. Add the following flags to your `turbo build` command in `package.json`:
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```
+--team=some-team --token=<value of API_TOKEN var set in the .env of your server>
+```
